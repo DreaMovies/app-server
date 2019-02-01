@@ -1,0 +1,15 @@
+{
+  "name": "app-server",
+  "version": "0.0.1",
+  "description": "A simple server app to handle chat connections to the client app using socket.io",
+  "main": "index.js",
+  "author": "SrPatinhas",
+  "private": true,
+  "license": "BSD",
+  "dependencies": {
+    "express": "4.16.4"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
