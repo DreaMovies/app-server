@@ -102,22 +102,38 @@ io.on('connection', (socket) => {
   });
   
   
-  socket.on('create or join', function(room) {
-        var numClients = io.sockets.clients(room).length;
+   socket.on('create or join', function (room) {
+        console.log('create or join to room ', room);
+        
+        var myRoom = io.sockets.adapter.rooms[room] || { length: 0 };
+        var numClients = myRoom.length;
 
-        if (numClients === 0) {
+        console.log(room, ' has ', numClients, ' clients');
+
+        if (numClients == 0) {
             socket.join(room);
             socket.emit('created', room);
         } else if (numClients == 1) {
-
-            io.sockets.in(room).emit('join', room);
             socket.join(room);
             socket.emit('joined', room);
         } else {
             socket.emit('full', room);
         }
-        socket.emit('emit(): client ' + socket.id + ' joined room ' + room);
-        socket.broadcast.emit('broadcast(): client ' + socket.id + ' joined room ' + room);
+    });
 
+    socket.on('ready', function (room){
+        socket.broadcast.to(room).emit('ready');
+    });
+
+    socket.on('candidate', function (event){
+        socket.broadcast.to(event.room).emit('candidate', event);
+    });
+
+    socket.on('offer', function(event){
+        socket.broadcast.to(event.room).emit('offer',event.sdp);
+    });
+
+    socket.on('answer', function(event){
+        socket.broadcast.to(event.room).emit('answer',event.sdp);
     });
 });
