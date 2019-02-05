@@ -24,6 +24,11 @@ $(function() {
   var $currentInput = $usernameInput.focus();
 
   var socket = io();
+  var opts = {peerOpts: {trickle: false}, autoUpgrade: false}
+  var p2psocket = new Socketiop2p(socket, opts, function () {
+    privateButton.disabled = false
+    p2psocket.emit('peer-obj', 'Hello there. I am ' + p2psocket.peerId)
+  })
 
   const addParticipantsMessage = (data) => {
     var message = '';
@@ -279,4 +284,33 @@ $(function() {
     log('attempt to reconnect has failed');
   });
 
+  p2psocket.on('peer-msg', function (data) {
+    var li = document.createElement('li')
+    li.appendChild(document.createTextNode(data.textVal))
+    msgList.appendChild(li)
+  })
+
+  p2psocket.on('peer-file', function (data) {
+    var li = document.createElement('li')
+    var fileBytes = new Uint8Array(data.file)
+    var blob = new window.Blob([fileBytes], {type: 'image/jpeg'})
+    var urlCreator = window.URL || window.webkitURL
+    var fileUrl = urlCreator.createObjectURL(blob)
+    var a = document.createElement('a')
+    var linkText = document.createTextNode('New file')
+    a.href = fileUrl
+    a.appendChild(linkText)
+    li.appendChild(a)
+    msgList.appendChild(li)
+  })
+  
+  p2psocket.on('go-private', function () {
+    goPrivate()
+  })
+
+  function goPrivate () {
+    p2psocket.useSockets = false
+    upgradeMsg.innerHTML = 'WebRTC connection established!'
+    privateButton.disabled = true
+  }
 });
