@@ -32,6 +32,15 @@ io.on('connection', (socket) => {
       message: data
     });*/
   });
+  // when the client emits 'new message', this listens and executes
+  socket.on('new call', (data) => {
+    // we tell the client to execute 'new message'
+    socket.broadcast.emit('new call', data);
+    /*{
+      username: socket.username,
+      message: data
+    });*/
+  });
 
   // when the client emits 'add user', this listens and executes
   socket.on('add user', (username) => {
@@ -81,14 +90,34 @@ io.on('connection', (socket) => {
   socket.on('peer-msg', function (data) {
     console.log('Message from peer: %s', data)
     socket.broadcast.emit('peer-msg', data)
-  })
+  });
 
   socket.on('peer-file', function (data) {
     console.log('File from peer: %s', data)
     socket.broadcast.emit('peer-file', data)
-  })
+  });
 
   socket.on('go-private', function (data) {
     socket.broadcast.emit('go-private', data)
-  })
+  });
+  
+  
+  socket.on('create or join', function(room) {
+        var numClients = io.sockets.clients(room).length;
+
+        if (numClients === 0) {
+            socket.join(room);
+            socket.emit('created', room);
+        } else if (numClients == 1) {
+
+            io.sockets.in(room).emit('join', room);
+            socket.join(room);
+            socket.emit('joined', room);
+        } else {
+            socket.emit('full', room);
+        }
+        socket.emit('emit(): client ' + socket.id + ' joined room ' + room);
+        socket.broadcast.emit('broadcast(): client ' + socket.id + ' joined room ' + room);
+
+    });
 });
