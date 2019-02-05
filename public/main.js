@@ -67,7 +67,7 @@ $(function() {
       // tell server to execute 'new message' and send along one parameter
       const newMessage = {
 		message: message,
-		sentBy: username,
+		username: username,
 		date: new Date()
 	};
 	    
@@ -94,13 +94,13 @@ $(function() {
 
     var $usernameDiv = $('<span class="username"/>')
       .text(data.sentBy)
-      .css('color', getUsernameColor(data.sentBy));
+      .css('color', getUsernameColor(data.username));
     var $messageBodyDiv = $('<span class="messageBody">')
       .text(data.message);
 
     var typingClass = data.typing ? 'typing' : '';
     var $messageDiv = $('<li class="message"/>')
-      .data('username', data.sentBy)
+      .data('username', data.username)
       .addClass(typingClass)
       .append($usernameDiv, $messageBodyDiv);
 
