@@ -25,10 +25,10 @@ $(function() {
 
   var socket = io();
   var opts = {peerOpts: {trickle: false}, autoUpgrade: false}
-  var p2psocket = new Socketiop2p(socket, opts, function () {
+ /* var p2psocket = new Socketiop2p(socket, opts, function () {
     privateButton.disabled = false
     p2psocket.emit('peer-obj', 'Hello there. I am ' + p2psocket.peerId)
-  })
+  })*/
 
   const addParticipantsMessage = (data) => {
     var message = '';
@@ -289,7 +289,7 @@ $(function() {
     log('attempt to reconnect has failed');
   });
 
-  p2psocket.on('peer-msg', function (data) {
+ /* p2psocket.on('peer-msg', function (data) {
     var li = document.createElement('li')
     li.appendChild(document.createTextNode(data.textVal))
     msgList.appendChild(li)
@@ -317,5 +317,5 @@ $(function() {
     p2psocket.useSockets = false
     upgradeMsg.innerHTML = 'WebRTC connection established!'
     privateButton.disabled = true
-  }
+  }*/
 });
