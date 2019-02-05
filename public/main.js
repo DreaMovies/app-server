@@ -69,7 +69,12 @@ $(function() {
         message: message
       });
       // tell server to execute 'new message' and send along one parameter
-      socket.emit('new message', message);
+      const newMessage = {
+					message: message,
+					sentBy: username,
+					date: new Date()
+				};
+      socket.emit('new message', newMessage);
     }
   }
 
