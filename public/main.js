@@ -64,16 +64,14 @@ $(function() {
     // if there is a non-empty message and a socket connection
     if (message && connected) {
       $inputMessage.val('');
-      addChatMessage({
-        username: username,
-        message: message
-      });
       // tell server to execute 'new message' and send along one parameter
       const newMessage = {
-					message: message,
-					sentBy: username,
-					date: new Date()
-				};
+		message: message,
+		sentBy: username,
+		date: new Date()
+	};
+	    
+      addChatMessage(newMessage);
       socket.emit('new message', newMessage);
     }
   }
@@ -95,14 +93,14 @@ $(function() {
     }
 
     var $usernameDiv = $('<span class="username"/>')
-      .text(data.username)
-      .css('color', getUsernameColor(data.username));
+      .text(data.sentBy)
+      .css('color', getUsernameColor(data.sentBy));
     var $messageBodyDiv = $('<span class="messageBody">')
       .text(data.message);
 
     var typingClass = data.typing ? 'typing' : '';
     var $messageDiv = $('<li class="message"/>')
-      .data('username', data.username)
+      .data('username', data.sentBy)
       .addClass(typingClass)
       .append($usernameDiv, $messageBodyDiv);
 
