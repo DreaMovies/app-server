@@ -24,18 +24,18 @@ io.on('connection', (socket) => {
   var addedUser = false;
 
   // when the client emits 'new message', this listens and executes
-  socket.on('new message', (data) => {
+  socket.on('new_message', (data) => {
     // we tell the client to execute 'new message'
-    socket.broadcast.emit('new message', data);
+    socket.broadcast.emit('new_message', data);
     /*{
       username: socket.username,
       message: data
     });*/
   });
   // when the client emits 'new message', this listens and executes
-  socket.on('new call', (data) => {
+  socket.on('new_call', (data) => {
     // we tell the client to execute 'new message'
-    socket.broadcast.emit('new call', data);
+    socket.broadcast.emit('new_call', data);
     /*{
       username: socket.username,
       message: data
@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
   });
 
   // when the client emits 'add user', this listens and executes
-  socket.on('add user', (username) => {
+  socket.on('add_user', (username) => {
     if (addedUser) return;
 
     // we store the username in the socket session for this client
@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
       numUsers: numUsers
     });
     // echo globally (all clients) that a person has connected
-    socket.broadcast.emit('user joined', {
+    socket.broadcast.emit('user_joined', {
       username: socket.username,
       numUsers: numUsers
     });
@@ -68,11 +68,18 @@ io.on('connection', (socket) => {
   });
 
   // when the client emits 'stop typing', we broadcast it to others
-  socket.on('stop typing', () => {
-    socket.broadcast.emit('stop typing', {
+  socket.on('stop_typing', () => {
+    socket.broadcast.emit('stop_typing', {
       username: socket.username
     });
   });
+
+  // when the client emits 'stop typing', we broadcast it to others
+  socket.on('pingServer', () => {
+    socket.broadcast.emit('ping', 'Pong!');
+  });
+  
+  
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
@@ -102,7 +109,7 @@ io.on('connection', (socket) => {
   });
   
   
-   socket.on('create or join', function (room) {
+   socket.on('create_or_join', function (room) {
         console.log('create or join to room ', room);
         
         var myRoom = io.sockets.adapter.rooms[room] || { length: 0 };
