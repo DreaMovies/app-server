@@ -1,19 +1,19 @@
 {
-  "name": "app-server",
-  "version": "0.0.1",
-  "description": "A simple server app to handle chat connections to the client app using socket.io",
-  "main": "index.js",
-  "author": "SrPatinhas",
-  "private": true,
-  "license": "BSD",
-  "dependencies": {
-    	"express": "4.16.4",
-    	"socket.io": "^2.2.0",
-	"socket.io-client": "^2.2.0",
-	"socket.io-p2p-server": "^1.2.0",
-	"socket.io-p2p": "^2.2.0"
-  },
-  "scripts": {
-    "start": "node index.js"
-  }
+    "name": "app-server",
+    "version": "0.1.0",
+    "description": "A simple server app to handle chat connections to the client app using socket.io",
+    "main": "index.js",
+    "author": "SrPatinhas",
+    "private": true,
+    "license": "GNU GPLv3",
+    "dependencies": {
+        "express": "^4.17.1",
+        "socket.io": "^2.3.0",
+        "socket.io-client": "^2.3.0",
+        "socket.io-p2p-server": "^1.2.0",
+        "socket.io-p2p": "^2.2.0"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
 }
